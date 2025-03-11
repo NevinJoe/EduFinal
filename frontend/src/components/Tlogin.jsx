@@ -4,44 +4,52 @@ import { Box, Button, TextField, Typography, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const Tlogin = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // To display error messages
+  const [error, setError] = useState(""); // Store error messages
+  const [loading, setLoading] = useState(false); // Button loading state
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-  
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    setLoading(true);
+    setError(""); // Clear previous errors
+
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
-  
+
+      // Extract token and user details
       const { token, user } = response.data;
-  
-      console.log("Login Response:", response.data); // Debugging
-  
+
+      // Check if the user has the role of "student"
       if (user.role !== "teacher") {
-        setError("Access denied. Only teachers can log in.");
+        setError("Access denied. Only teachers can log in here.");
+        setLoading(false);
         return;
       }
-  
-      console.log("Teacher ID:", user.id); // Debugging
-  
-      // Store teacherId properly
-      localStorage.setItem("teacherId", user.id); // ✅ Ensure this is stored
+
+      // Store token in localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("teacherId", user.id);
       localStorage.setItem("user", JSON.stringify(user));
-  
-      navigate("/teacher");
-    } catch (err) {
-      setError(err.response?.data?.error || "Invalid credentials, please try again.");
+      navigate("/teacher"); // Redirect to teacher dashboard
+    } catch (error) {
+      setError(error.response?.data?.error || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
     }
   };
-  
+
+  const handleSignupNavigate = () => navigate("/tsignup");
+  const handleHomeNavigate = () => navigate("/t");
 
   return (
     <motion.div
@@ -61,8 +69,9 @@ const Tlogin = () => {
           position: "relative",
         }}
       >
+        {/* Home Button */}
         <Button
-          onClick={() => navigate("/")}
+          onClick={handleHomeNavigate}
           sx={{
             position: "absolute",
             top: "20px",
@@ -79,6 +88,7 @@ const Tlogin = () => {
           Home
         </Button>
 
+        {/* Logo */}
         <Box
           sx={{
             position: "absolute",
@@ -92,6 +102,7 @@ const Tlogin = () => {
           <img src="./images/edu.png" alt="EduConnect Logo" style={{ width: "80px", height: "auto" }} />
         </Box>
 
+        {/* Form Box */}
         <Box
           sx={{
             backgroundColor: "#ede8dc",
@@ -122,14 +133,33 @@ const Tlogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+
+            {/* Display error message if any */}
             {error && <Typography color="error">{error}</Typography>}
+
+            {/* Login Button */}
             <Button
               variant="contained"
               fullWidth
-              sx={{ backgroundColor: "#a5b68d", color: "#5a3d31", "&:hover": { backgroundColor: "#c1cfa1" } }}
+              sx={{
+                backgroundColor: "#a5b68d",
+                color: "#5a3d31",
+                "&:hover": { backgroundColor: "#c1cfa1" },
+              }}
               onClick={handleSubmit}
+              disabled={loading} // Disable while loading
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+
+            {/* Sign Up Navigation */}
+            <Button
+              variant="text"
+              fullWidth
+              sx={{ textAlign: "center", color: "#5a3d31" }}
+              onClick={handleSignupNavigate}
+            >
+              Don't have an account? Sign Up
             </Button>
           </Stack>
         </Box>
@@ -138,4 +168,4 @@ const Tlogin = () => {
   );
 };
 
-export default Tlogin;
+export default Login;

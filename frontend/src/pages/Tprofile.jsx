@@ -37,7 +37,8 @@ const Tprofile = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove token from storage
-    navigate("/"); // Redirect to login page
+    localStorage.removeItem("teacherId");
+    navigate("/t"); // Redirect to login page
   };
 
   useEffect(() => {

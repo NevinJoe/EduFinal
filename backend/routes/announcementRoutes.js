@@ -33,12 +33,18 @@ router.post("/create", upload.single("image"), async (req, res) => {
   });
   
 
-// ✅ Get announcements for a specific class
+// ✅ Get announcements for a specific teacher
 router.get("/fetchann", async (req, res) => {
   try {
-    const announcements = await Announcement.find()
-      .populate("classId", "semester batch subject") // Fetch semester, batch, and subject from Classroom
-      .populate("teacherId", "name") // Fetch only name from User
+    const { teacherId } = req.query; // Get teacherId from request query
+
+    if (!teacherId) {
+      return res.status(400).json({ message: "Teacher ID is required" });
+    }
+
+    const announcements = await Announcement.find({ teacherId }) // Filter by teacherId
+      .populate("classId", "semester batch subject")
+      .populate("teacherId", "name")
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -59,6 +65,7 @@ router.get("/fetchann", async (req, res) => {
     res.status(500).json({ message: "Error fetching announcements", error });
   }
 });
+
 
 // ✅ Update an announcement (Supports Image Upload)
 router.put("/edit/:id", upload.single("image"), async (req, res) => {

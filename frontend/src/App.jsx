@@ -2,9 +2,11 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css'
 import Title from './components/Title';
+import Ttitle from './components/Ttitle';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Tlogin from './components/Tlogin';
+import Tsignup from './components/Tsignup';
 import Teacher from './components/Teacher';
 import Announcements from './pages/Announcements';
 import Timetable from './pages/Timetable';
@@ -47,9 +49,11 @@ function App() {
       
       <Routes>
         <Route path='/' element={<Title/>}/>
+        <Route path='/t' element={<Ttitle/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
-        <Route path='/teachers' element={<Tlogin/>}/>
+        <Route path='/tlogin' element={<Tlogin/>}/>
+        <Route path='/tsignup' element={<Tsignup/>}/>
         <Route path='/teacher' element={<Teacher/>}/>
         <Route path='/teacher/announcements' element={<Announcements/>}/>
         <Route path='/teacher/announcements/manage' element={<Mannouncements/>}/>

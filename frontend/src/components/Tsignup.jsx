@@ -4,7 +4,7 @@ import { Box, Button, TextField, Typography, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const Signup = () => {
+const Tsignup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +18,8 @@ const Signup = () => {
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (name=="") {
-      setError("Please enter your name.");
-      return;
+        setError("Please enter your name.");
+        return;
     }
 
     if (!emailRegex.test(email)) {
@@ -44,11 +44,11 @@ const Signup = () => {
         name,
         email,
         password,
-        role: "student", // Assuming the user is a student
+        role: "teacher", // Assuming the user is a teacher
       });
 
       alert(response.data.message); // Show success message
-      navigate("/login"); // Redirect to login page
+      navigate("/tlogin"); // Redirect to login page
     } catch (error) {
       console.error("Signup error:", error);
 
@@ -67,7 +67,7 @@ const Signup = () => {
     setError(""); // Clear errors when component mounts
   }, []);
 
-  const handleHomeNavigate = () => navigate("/");
+  const handleHomeNavigate = () => navigate("/t");
 
   return (
     <motion.div
@@ -87,10 +87,11 @@ const Signup = () => {
           position: "relative",
         }}
       >
+
         {/* Home Button */}
         <Button
-          onClick={handleHomeNavigate}
-          sx={{
+            onClick={handleHomeNavigate}
+            sx={{
             position: "absolute",
             top: "20px",
             right: "20px",
@@ -101,25 +102,25 @@ const Signup = () => {
             borderRadius: "20px",
             padding: "8px 20px",
             transition: "transform 0.3s ease",
-          }}
+            }}
         >
-          Home
+            Home
         </Button>
 
         {/* Logo */}
         <Box
-          sx={{
+            sx={{
             position: "absolute",
             top: "20px",
             left: "20px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-          }}
+            }}
         >
-          <img src="./images/edu.png" alt="EduConnect Logo" style={{ width: "80px", height: "auto" }} />
+            <img src="./images/edu.png" alt="EduConnect Logo" style={{ width: "80px", height: "auto" }} />
         </Box>
-        
+
         {/* Form Box */}
         <Box
           sx={{
@@ -138,7 +139,7 @@ const Signup = () => {
           }}
         >
           <Typography color="purple" variant="h5" align="center" sx={{ marginBottom: 3 }}>
-            Student Sign Up
+            Teacher Sign Up
           </Typography>
           <Stack spacing={2}>
             <TextField label="Full Name" variant="outlined" fullWidth value={name} onChange={(e) => setName(e.target.value)} sx={{ maxWidth: "350px" }} />
@@ -170,7 +171,7 @@ const Signup = () => {
               variant="text"
               fullWidth
               sx={{ textAlign: "center", color: "#5a3d31", maxWidth: "350px" }}
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/tlogin")}
             >
               Already have an account? Login
             </Button>
@@ -181,4 +182,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Tsignup;

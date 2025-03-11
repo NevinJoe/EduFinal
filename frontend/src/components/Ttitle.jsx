@@ -3,14 +3,8 @@ import { Box, Button, Typography, Stack, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 
 const Title = () => {
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
-  const [isTeacher, setIsTeacher] = useState(false); // Set initial view to Student
   const [animate, setAnimate] = useState(false); // To trigger animation
   const navigate = useNavigate(); // Initialize navigate function
-
-  const handleRoleSwitch = () => {
-    setIsTeacher(!isTeacher); // Toggle between Teacher and Student
-  };
 
   useEffect(() => {
     // Trigger animation after the component mounts
@@ -42,6 +36,7 @@ const Title = () => {
         animation: "fadeIn 1s ease-out forwards, scaleUp 1s ease-out forwards", // Animation applied to whole container
       }}
     >
+
       {/* Logo Section */}
       <Box
         mb={4}
@@ -107,7 +102,7 @@ const Title = () => {
             transition: "transform 0.3s ease", // Smooth transition
             width: "100%", // Full width for buttons
           }}
-          onClick={() => handleNavigation("/login")} // Navigate to /login on Student Login
+          onClick={() => handleNavigation("/tlogin")} // Navigate to /login on Student Login
         >
           Login
         </Button>
@@ -126,7 +121,7 @@ const Title = () => {
             transition: "transform 0.3s ease", // Smooth transition
             width: "100%", // Full width for buttons
           }}
-          onClick={() => handleNavigation("/signup")} // Navigate to /signup on Student Sign Up
+          onClick={() => handleNavigation("/tsignup")} // Navigate to /signup on Student Sign Up
         >
           Sign Up
         </Button>   
